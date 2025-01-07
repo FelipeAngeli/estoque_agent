@@ -1,82 +1,90 @@
-import os
 import streamlit as st
+from ui.interface import render_interface
 
-from decouple import config
+st.set_page_config(page_title='Estoque GPT', page_icon=":shark:")
 
-from langchain import hub
-from langchain.agents import create_react_agent, AgentExecutor
-from langchain.prompts import PromptTemplate
-from langchain_community.utilities.sql_database import SQLDatabase
-from langchain_community.agent_toolkits.sql.toolkit import SQLDatabaseToolkit
-from langchain_openai import ChatOpenAI
+if __name__ == "__main__":
+    render_interface()
 
-os.environ['OPENAI_API_KEY'] = config('OPENAI_API_KEY')
+# import os
+# import streamlit as st
 
-st.set_page_config(
-    page_title='Estoque GPT',
-    page_icon=":shark:",
-),
+# from decouple import config
 
-st.header('Assistente de estoque')
+# from langchain import hub
+# from langchain.agents import create_react_agent, AgentExecutor
+# from langchain.prompts import PromptTemplate
+# from langchain_community.utilities.sql_database import SQLDatabase
+# from langchain_community.agent_toolkits.sql.toolkit import SQLDatabaseToolkit
+# from langchain_openai import ChatOpenAI
 
-model_options = [
-    'gpt-3.5-turbo',
-    'gpt-4',
-    'gpt-4-turbo',
-    'gpt-4o-mini',
-    'gpt-4o'
-]
+# os.environ['OPENAI_API_KEY'] = config('OPENAI_API_KEY')
 
-selected_model = st.sidebar.selectbox(
-    label='Selecione o modelo de LLM',
-    options=model_options,
-)
+# st.set_page_config(
+#     page_title='Estoque GPT',
+#     page_icon=":shark:",
+# ),
 
-st.sidebar.markdown('## SOBRE')
-st.sidebar.markdown('Este é um assistente de estoque baseado em modelos de linguagem de grande porte (LLM).')
+# st.header('Assistente de estoque')
 
-st.write('Faça uma pergunta sobre o estoque de produtos, preços e reposições')
+# model_options = [
+#     'gpt-3.5-turbo',
+#     'gpt-4',
+#     'gpt-4-turbo',
+#     'gpt-4o-mini',
+#     'gpt-4o'
+# ]
 
-user_question = st.text_input('O que deseja saber sobre o estoque?')
+# selected_model = st.sidebar.selectbox(
+#     label='Selecione o modelo de LLM',
+#     options=model_options,
+# )
 
-model = ChatOpenAI(model=selected_model)
+# st.sidebar.markdown('## SOBRE')
+# st.sidebar.markdown('Este é um assistente de estoque baseado em modelos de linguagem de grande porte (LLM).')
 
-db = SQLDatabase.from_uri('sqlite:///estoque.db')
+# st.write('Faça uma pergunta sobre o estoque de produtos, preços e reposições')
 
-toolkit = SQLDatabaseToolkit(
-    db=db,
-    llm=model,
-)
-system_message = hub.pull('hwchase17/react')
+# user_question = st.text_input('O que deseja saber sobre o estoque?')
 
-agent = create_react_agent(
-    llm=model,
-    tools=toolkit.get_tools(),
-    prompt=system_message,
-)
+# model = ChatOpenAI(model=selected_model)
 
-agent_executor = AgentExecutor(
-    agent=agent,
-    tools=toolkit.get_tools(),
-    verbose=True, 
-    )
+# db = SQLDatabase.from_uri('sqlite:///estoque.db')
 
-prompt = '''
-Use as ferramentas necessárias para responder perguntas relacionadas ao
-estoque de produtos. Você fornecerá insights sobre produtos, preços, 
-reposição de estoque e relatórios conforme solicitado pelo usuário.
-A resposta final deve ter uma formatação amigável de visualização para o usuário.
-Sempre responda em português brasileiro.
-Pergunta: {q}
-'''
-prompt_template = PromptTemplate.from_template(prompt)
+# toolkit = SQLDatabaseToolkit(
+#     db=db,
+#     llm=model,
+# )
+# system_message = hub.pull('hwchase17/react')
 
-if st.button('Consultar'):
-    if user_question:
-        with st.spinner('Consultando o banco de dados...'):
-            formatted_prompt = prompt_template.format(q=user_question)
-            output = agent_executor.invoke({'input': formatted_prompt})
-            st.markdown(output.get('output'))
-    else:
-        st.warning('Por favor, insira uma pergunta.')
+# agent = create_react_agent(
+#     llm=model,
+#     tools=toolkit.get_tools(),
+#     prompt=system_message,
+# )
+
+# agent_executor = AgentExecutor(
+#     agent=agent,
+#     tools=toolkit.get_tools(),
+#     verbose=True, 
+#     )
+
+# prompt = '''
+# Use as ferramentas necessárias para responder perguntas relacionadas ao
+# estoque de produtos. Você fornecerá insights sobre produtos, preços, 
+# reposição de estoque e relatórios conforme solicitado pelo usuário.
+# A resposta final deve ter uma formatação amigável de visualização para o usuário.
+# Sempre responda em português brasileiro.
+# Pergunta: {q}
+# '''
+# prompt_template = PromptTemplate.from_template(prompt)
+
+# if st.button('Consultar'):
+#     if user_question:
+#         with st.spinner('Consultando o banco de dados...'):
+#             formatted_prompt = prompt_template.format(q=user_question)
+#             output = agent_executor.invoke({'input': formatted_prompt})
+#             st.markdown(output.get('output'))
+#     else:
+#         st.warning('Por favor, insira uma pergunta.')
 
