@@ -23,3 +23,15 @@ selected_model = st.sidebar.selectbox(
 
 st.sidebar.markdown('## SOBRE')
 st.sidebar.markdown('Este é um assistente de estoque baseado em modelos de linguagem de grande porte (LLM).')
+
+st.write('Faça uma pergunta sobre o estoque de produtos, preços e reposições')
+
+user_question = st.text_input('O que deseja saber sobre o estoque?')
+
+if st.button('Enviar pergunta'):
+    if user_question:
+        st.write(f'Pergunta: {user_question}')
+        st.write(f'Resposta: ...')
+    else:
+        st.warning('Por favor, insira uma pergunta')
+
