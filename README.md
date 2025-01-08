@@ -1,6 +1,7 @@
+
 # Estoque Agent
 
-O **Estoque Agent** é um sistema de controle de estoque desenvolvido em Python, utilizando frameworks e bibliotecas como Flask, SQLAlchemy e Bootstrap. Este projeto tem como objetivo facilitar o gerenciamento de produtos, fornecedores e movimentações de entrada e saída de itens em um ambiente de estoque.
+O **Estoque Agent** é um sistema de controle de estoque desenvolvido em Python, utilizando Streamlit e LangChain. Este projeto tem como objetivo facilitar o gerenciamento de produtos, fornecedores e movimentações de entrada e saída de itens em um ambiente de estoque.
 
 ## Funcionalidades
 
@@ -8,13 +9,14 @@ O **Estoque Agent** é um sistema de controle de estoque desenvolvido em Python,
 - **Gerenciamento de Fornecedores**: Possibilita a adição e manutenção de dados de fornecedores associados aos produtos.
 - **Movimentação de Estoque**: Registra entradas e saídas de produtos, atualizando automaticamente as quantidades disponíveis.
 - **Relatórios**: Gera relatórios sobre o status do estoque, incluindo produtos com baixo estoque e histórico de movimentações.
+- **Interação com IA**: Utiliza LangChain para criar fluxos de processamento inteligente de dados e consultas.
 
 ## Tecnologias Utilizadas
 
 - **Python**: Linguagem principal do projeto.
-- **Flask**: Framework web utilizado para o desenvolvimento do backend.
+- **Streamlit**: Framework para a criação de interfaces web interativas e simples.
+- **LangChain**: Framework para construção de aplicações orientadas a IA e processamento de linguagem natural.
 - **SQLAlchemy**: ORM (Object-Relational Mapping) para gerenciamento do banco de dados.
-- **Bootstrap**: Framework CSS para estilização e design responsivo.
 
 ## Requisitos
 
@@ -45,21 +47,13 @@ Antes de iniciar, certifique-se de ter instalado em sua máquina:
    pip install -r requirements.txt
    ```
 
-4. **Configure o banco de dados**:
-
-   Certifique-se de que o banco de dados esteja configurado corretamente no arquivo de configuração. Execute as migrações para criar as tabelas necessárias:
+4. **Execute a aplicação**:
 
    ```bash
-   flask db upgrade
+   streamlit run app.py
    ```
 
-5. **Execute a aplicação**:
-
-   ```bash
-   flask run
-   ```
-
-   A aplicação estará disponível em `http://localhost:5000`.
+   A aplicação estará disponível em `http://localhost:8501`.
 
 ## Estrutura do Projeto
 
